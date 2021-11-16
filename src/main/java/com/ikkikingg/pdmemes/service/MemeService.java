@@ -82,8 +82,7 @@ public class MemeService extends TelegramLongPollingBot {
             page.getChatIds().forEach(chatId -> {
                 sendPosts(chatId);
             });
-            Runnable runnable = () -> repo.saveActualPage(mapper, page);
-            new Thread(runnable).start();
+            repo.saveActualPage(mapper, page);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
