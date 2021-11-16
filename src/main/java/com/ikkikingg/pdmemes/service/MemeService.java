@@ -5,10 +5,6 @@ import com.ikkikingg.pdmemes.config.SpringConfig;
 import com.ikkikingg.pdmemes.model.Page;
 import com.ikkikingg.pdmemes.model.Post;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,13 +26,15 @@ public class MemeService extends TelegramLongPollingBot {
     private final Page page;
     private final ObjectMapper mapper;
     private final ParserService parserService;
+    private final JsonRepo repo;
 
     @Autowired
-    public MemeService(SpringConfig config, Page page, ObjectMapper mapper, ParserService parserService) {
+    public MemeService(SpringConfig config, Page page, ObjectMapper mapper, ParserService parserService, JsonRepo repo) {
         this.config = config;
         this.page = page;
         this.mapper = mapper;
         this.parserService = parserService;
+        this.repo = repo;
     }
 
     public void onUpdateReceived(Update update) {
@@ -84,7 +82,7 @@ public class MemeService extends TelegramLongPollingBot {
             page.getChatIds().forEach(chatId -> {
                 sendPosts(chatId);
             });
-            Runnable runnable = () -> JsonRepo.saveActualPage(mapper, page);
+            Runnable runnable = () -> repo.saveActualPage(mapper, page);
             new Thread(runnable).start();
         } catch (IOException ex) {
             ex.printStackTrace();
