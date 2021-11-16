@@ -47,7 +47,7 @@ public class SpringConfig {
     }
 
     public static String readFileFromResources(String filename) throws URISyntaxException, IOException {
-        URL resource = SpringConfig.class.getClassLoader().getResource(filename);
+        URL resource = ClassLoader.getSystemResource(filename);
         byte[] bytes = Files.readAllBytes(Paths.get(resource.toURI()));
         return new String(bytes);
     }
