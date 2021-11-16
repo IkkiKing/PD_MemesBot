@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -36,6 +38,9 @@ public class SpringConfig {
         Page page = new Page();
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            System.out.println(Paths.get(classloader.getResource("page.json").toURI().toString()));
+            File file = Paths.get(classloader.getResource("page.json").toURI()).toFile();
+            System.out.println(file.getAbsoluteFile());
             page = getObjectMapper().readValue(Paths.get(classloader.getResource("page.json").toURI()).toFile(), Page.class);
         } catch (IOException | URISyntaxException e) {
             log.error("Error while reading json page file: " + e.getMessage());
