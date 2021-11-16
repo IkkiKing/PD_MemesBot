@@ -9,13 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import java.io.File;
+import java.io.IOException;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
 
 @Configuration
 @Data
@@ -35,27 +31,13 @@ public class SpringConfig {
         return new ObjectMapper();
     }
 
-/*    @Bean
-    public Page getActualPage() {
-        Page page = new Page();
-        try (InputStream inputStream = getClass().getResourceAsStream("/page.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String contents = reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-            page = getObjectMapper().readValue(contents, Page.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Cannot read file from specified path");
-        }
-        return page;
-    }*/
-
     @Bean
     public Page getActualPage() {
         Page page = new Page();
         try {
             page = getObjectMapper().readValue(new File("src/main/resources/page.json"), Page.class);
         } catch (IOException e) {
+            log.error("Error while reading json page file: " + e.getMessage());
             e.printStackTrace();
         }
         return page;
