@@ -45,23 +45,8 @@ public class SpringConfig {
             page = getObjectMapper().readValue(contents, Page.class);
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("Cannot read file from specified path");
         }
         return page;
     }
-
-//    public String readFileFromResources(String filename) throws Exception {
-//        Class clazz = SpringConfig.class;
-//        InputStream inputStream = clazz.getResourceAsStream(filename);
-//        return readFromInputStream(inputStream);
-//    }
-
-//    private String readFromInputStream(InputStream inputStream) throws Exception {
-//        ByteArrayOutputStream result = new ByteArrayOutputStream();
-//        byte[] buffer = new byte[1024];
-//        for (int length; (length = inputStream.read(buffer)) != -1; ) {
-//            result.write(buffer, 0, length);
-//        }
-//        // StandardCharsets.UTF_8.name() > JDK 7
-//        return result.toString("UTF-8");
-//    }
 }
