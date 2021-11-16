@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Configuration
@@ -37,14 +39,16 @@ public class SpringConfig {
     public Page getActualPage() {
         Page page = new Page();
         try {
-            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            System.out.println(Paths.get(classloader.getResource("page.json").toURI().toString()));
-            File file = Paths.get(classloader.getResource("page.json").toURI()).toFile();
-            System.out.println(file.getAbsoluteFile());
-            page = getObjectMapper().readValue(Paths.get(classloader.getResource("page.json").toURI()).toFile(), Page.class);
-        } catch (IOException | URISyntaxException e) {
+            page = getObjectMapper().readValue(readFileFromResources("page.json"), Page.class);
+        } catch (Exception e) {
             log.error("Error while reading json page file: " + e.getMessage());
         }
         return page;
+    }
+
+    public static String readFileFromResources(String filename) throws URISyntaxException, IOException {
+        URL resource = SpringConfig.class.getClassLoader().getResource(filename);
+        byte[] bytes = Files.readAllBytes(Paths.get(resource.toURI()));
+        return new String(bytes);
     }
 }
