@@ -17,7 +17,6 @@ import java.util.TreeSet;
 @Service
 public class ParserService {
     private final Page page;
-
     @Autowired
     public ParserService(Page page) {
         this.page = page;
