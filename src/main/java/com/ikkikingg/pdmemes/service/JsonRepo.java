@@ -14,23 +14,23 @@ import java.net.URLDecoder;
 public class JsonRepo {
     private static final String sp = File.separator;
 
-//    public static void saveActualPage(ObjectMapper mapper,
-//                                      Page page) {
-//        try {
-//
-//            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-//            File file = Paths.get(classloader.getResource("page.json").toURI()).toFile();
-//            PrintWriter writer = new PrintWriter(file);
-//            writer.print(mapper.writeValueAsString(page));
-//            writer.close();
-//            log.info("should be saved to json file");
-//        } catch (Exception ex) {
-//            log.error("Error while saving json page file: " + ex.getMessage());
-//            ex.printStackTrace();
-//        }
-//    }
+    public static void saveActualPage(ObjectMapper mapper,
+                                      Page page) {
+        try {
 
-    public void saveActualPage(ObjectMapper mapper,
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            File file = new File("src/main/resources/page.json");
+            PrintWriter writer = new PrintWriter(file);
+            writer.print(mapper.writeValueAsString(page));
+            writer.close();
+            log.info("should be saved to json file");
+        } catch (Exception ex) {
+            log.error("Error while saving json page file: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+/*    public void saveActualPage(ObjectMapper mapper,
                                 Page page) {
         String jarPath = "";
         System.out.println("Writing data...");
@@ -60,5 +60,5 @@ public class JsonRepo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

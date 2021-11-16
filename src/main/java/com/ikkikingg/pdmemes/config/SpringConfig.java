@@ -35,7 +35,7 @@ public class SpringConfig {
         return new ObjectMapper();
     }
 
-    @Bean
+/*    @Bean
     public Page getActualPage() {
         Page page = new Page();
         try (InputStream inputStream = getClass().getResourceAsStream("/page.json");
@@ -46,6 +46,17 @@ public class SpringConfig {
         } catch (IOException e) {
             e.printStackTrace();
             log.error("Cannot read file from specified path");
+        }
+        return page;
+    }*/
+
+    @Bean
+    public Page getActualPage() {
+        Page page = new Page();
+        try {
+            page = getObjectMapper().readValue(new File("src/main/resources/page.json"), Page.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return page;
     }
