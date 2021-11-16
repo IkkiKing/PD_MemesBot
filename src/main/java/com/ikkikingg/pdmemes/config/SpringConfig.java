@@ -43,7 +43,8 @@ public class SpringConfig {
         try {
             page = getObjectMapper().readValue(readFileFromResources("/page.json"), Page.class);
         } catch (Exception e) {
-            log.error("Error while reading json page file: " + e.getMessage());
+            log.error("Error while reading json page file: ");
+            e.printStackTrace();
         }
         return page;
     }
