@@ -11,10 +11,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 @Component
 @Slf4j
 public class BotInitializer {
     private MemeService bot;
+    private static final String PORT = System.getenv("PORT");
 
     @Autowired
     public BotInitializer(MemeService bot) {
@@ -28,6 +33,14 @@ public class BotInitializer {
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiRequestException e) {
             log.error("Error of regisration tg bot:" + e.getMessage() );
+        }
+
+        try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(PORT))) {
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
