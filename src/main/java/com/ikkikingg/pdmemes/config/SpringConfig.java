@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -39,16 +41,26 @@ public class SpringConfig {
     public Page getActualPage() {
         Page page = new Page();
         try {
-            page = getObjectMapper().readValue(readFileFromResources("page.json"), Page.class);
+            page = getObjectMapper().readValue(readFileFromResources("/page.json"), Page.class);
         } catch (Exception e) {
             log.error("Error while reading json page file: " + e.getMessage());
         }
         return page;
     }
 
-    public static String readFileFromResources(String filename) throws URISyntaxException, IOException {
-        URL resource = ClassLoader.getSystemResource(filename);
-        byte[] bytes = Files.readAllBytes(Paths.get(resource.toURI()));
-        return new String(bytes);
+    public String readFileFromResources(String filename) throws Exception {
+        Class clazz = SpringConfig.class;
+        InputStream inputStream = clazz.getResourceAsStream(filename);
+        return readFromInputStream(inputStream);
+    }
+
+    private String readFromInputStream(InputStream inputStream) throws Exception {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        for (int length; (length = inputStream.read(buffer)) != -1; ) {
+            result.write(buffer, 0, length);
+        }
+        // StandardCharsets.UTF_8.name() > JDK 7
+        return result.toString("UTF-8");
     }
 }
