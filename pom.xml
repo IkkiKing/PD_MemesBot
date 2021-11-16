@@ -14,7 +14,7 @@
     <name>pd-memes</name>
     <description>TG bot retrieving memes from pd page</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <telegram.version>5.4.0</telegram.version>
     </properties>
     <dependencies>
