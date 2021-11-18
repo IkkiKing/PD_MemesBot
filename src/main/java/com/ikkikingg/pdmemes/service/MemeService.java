@@ -38,9 +38,14 @@ public class MemeService extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
+        update.getUpdateId();
+        String messageText;
+        String chatId;
+
         if (update.getMessage() != null) {
-            String chatId = update.getMessage().getChatId().toString();
-            String messageText = update.getMessage().getText();
+            chatId = update.getMessage().getChatId().toString();
+            messageText = update.getMessage().getText();
+
             if (messageText.contains("/memes")) {
                 log.info("Added new chatId = " + chatId);
                 page.getChatIds().add(chatId);
@@ -50,6 +55,9 @@ public class MemeService extends TelegramLongPollingBot {
             if (messageText.contains("/go")) {
                 parse();
             }
+        } else {
+            chatId = update.getChannelPost().getChatId().toString();
+            messageText = update.getChannelPost().getText();
         }
     }
 
