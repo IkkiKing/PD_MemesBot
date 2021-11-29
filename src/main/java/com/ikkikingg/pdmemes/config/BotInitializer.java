@@ -19,7 +19,7 @@ import java.net.Socket;
 @Slf4j
 public class BotInitializer {
     private MemeService bot;
-    private static final String PORT = System.getenv("PORT");
+    private final static int PORT = 8080;
 
     @Autowired
     public BotInitializer(MemeService bot) {
@@ -35,7 +35,7 @@ public class BotInitializer {
             log.error("Error of regisration tg bot:" + e.getMessage() );
         }
 
-        try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(PORT))) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
             }
