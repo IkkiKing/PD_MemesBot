@@ -17,7 +17,7 @@ public class JsonRepo {
         try {
 
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            File file = new File(getClass().getClassLoader().getResource("page.json").toURI());
+            File file = new File("/home/ikkikingg/PD_MemesBot/src/main/resources/page.json");
             PrintWriter writer = new PrintWriter(file);
             writer.print(mapper.writeValueAsString(page));
             writer.close();
