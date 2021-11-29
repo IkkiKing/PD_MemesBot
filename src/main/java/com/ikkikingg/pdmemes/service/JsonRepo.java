@@ -11,14 +11,13 @@ import java.io.PrintWriter;
 @Slf4j
 @Repository
 public class JsonRepo {
-    private static final String sp = File.separator;
 
-    public static void saveActualPage(ObjectMapper mapper,
+    public void saveActualPage(ObjectMapper mapper,
                                       Page page) {
         try {
 
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            File file = new File("src/main/resources/page.json");
+            File file = new File(getClass().getClassLoader().getResource("page.json").toURI());
             PrintWriter writer = new PrintWriter(file);
             writer.print(mapper.writeValueAsString(page));
             writer.close();
